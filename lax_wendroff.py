@@ -67,7 +67,8 @@ def main():
     
     fig, ax = plt.subplots()
     
-    line, = ax.plot(xvalues, y1[0])
+    line, = ax.plot(xvalues,y1[0])
+
     def animate(i):
         line.set_ydata(y1[i])
         return line,
