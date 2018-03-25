@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 plt.style.use("ggplot")
 
-N = 300
-M = 50
+N = 301
+M = 43
 h = 1 / M
 T = 1
 k = T / (N - 1)
@@ -47,8 +47,9 @@ def main():
 			du = p * g * (h_grid[i, j+1] - h_grid[i, j-1])
 			u_grid[i + 1,j] = u_grid[i,j] - du
 
+
 		for j in range(1,M):#h
-			dh = p * H * (u_grid[i+1, j-1] - u_grid[i+1, j+1])
+			dh = p * H * (u_grid[i+1, j+1] - u_grid[i+1, j-1])
 			h_grid[i + 1,j] = h_grid[i,j] - dh
 
 
@@ -57,11 +58,21 @@ def main():
 
 	print(u_grid)
 	print(h_grid)
+	'''
+	ones = 0
+	for n in range(300):
+		for m in range(50):
+			if h_grid[n, m] == 1:
+				ones+=1
+	print(ones, ones/(300*50))
+	'''
+	#h_grid2 = h_grid[::2]
+	#xvalues2 = xvalues[::2]
 
 	fig, ax = plt.subplots()
-
+	#j = int(i/2)
 	line, = ax.plot(xvalues, h_grid[i])
-    
+	
 	def animate(i):
 		line.set_ydata(h_grid[i])
 		return line,
