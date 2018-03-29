@@ -62,9 +62,9 @@ def main():
         y1[i + 1,M] = 2 * y1[i + 1,M - 1] - y1[i + 1,M - 2]
         y2[i + 1,0] = 2 * y2[i + 1,1] - y2[i + 1,2]
         #y2[i + 1,M] = 2 * y2[i + 1,M - 1] - y2[i + 1,M - 2]
-    
-    
-    
+
+
+
     fig, ax = plt.subplots()
     
     line, = ax.plot(xvalues,y1[0])
@@ -78,7 +78,7 @@ def main():
     
     ax.ani = animation.FuncAnimation(fig, animate, np.arange(1, nfixed), init_func = init,
                                   interval=25, blit=True)
-    
+
     plt.show()
     
     return 0

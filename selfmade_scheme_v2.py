@@ -4,12 +4,12 @@ import matplotlib.animation as animation
 
 plt.style.use("ggplot")
 
-N = 500
-M = 50
+N = 2000
+M = 100
 dx = 10 / (M+1)
-T = 15
+T = 10
 dt = T / (N + 1)
-g = 1
+g = 10
 
 xvalues = np.array([i * dx for i in range(M+2)])
 tvalues = np.array([i * dt for i in range(N+2)])
@@ -34,10 +34,13 @@ def main():
     for n in range(N+1):
         for m in range(1,M+1):
             h[n+1][m] = max(0, -(ddx(h,n,m)*u[n][m]+h[n][m]*ddx(u,n,m))*dt+h[n][m])
-            if h[n+1][m] == 0 or h[n][m] == 0:
+            if h[n+1][m] == 0:
                 u[n+1][m] = 0
             else:
                 u[n+1][m] = (-u[n][m]*(h[n+1][m]-h[n][m])/dt-2*h[n][m]*u[n][m]*ddx(u,n,m)-u[n][m]**2*ddx(h,n,m)-g*h[n][m]*ddx(h,n,m))*dt/h[n][m]+u[n][m]
+        #h[n+1][0] = 8/10*h[n+1][1]-2/10*h[n+1][2]
+        #h[n + 1][M+1] = 8/10 * h[n + 1][M] - 2/10*h[n + 1][M-1]
+        #Uncomment these to remove boundaries forced to 1
     fig, ax = plt.subplots()
 
     line, = ax.plot(xvalues, h[0])
