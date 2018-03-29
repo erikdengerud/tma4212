@@ -4,8 +4,8 @@ import matplotlib.animation as animation
 
 plt.style.use("ggplot")
 
-N = 500
-M = 150
+N = 1000
+M = 300
 dx = 10 / (M+1)
 T = 10
 dt = T / (N + 1)
@@ -50,9 +50,9 @@ def main():
         b[-2]   += -dt*u[n][M]
         b[-1]   += -dt*g*h[n][M]
 
-        x = np.linalg.lstsq(A,b,rcond=None)
-        h[n+1][1:M+1] = x[0][M:2*M]
-        u[n+1][1:M+1] = x[0][0:M]
+        x = np.linalg.solve(A,b)
+        h[n+1][1:M+1] = x[M:2*M]
+        u[n+1][1:M+1] = x[0:M]
 
     fig, ax = plt.subplots()
 
