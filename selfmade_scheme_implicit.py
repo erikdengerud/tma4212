@@ -4,12 +4,17 @@ import matplotlib.animation as animation
 
 plt.style.use("ggplot")
 
-N = 1000
-M = 300
+#This method uses BC
+#  h(0,t_n+1))=h(x_1,t_n))
+#  h(x_m+1,t_n+1))=h(x_m,t_n))
+
+
+N = 500
+M = 200
 dx = 10 / (M+1)
 T = 10
 dt = T / (N + 1)
-g = 1
+g = 9.81
 
 xvalues = np.array([i * dx for i in range(M+2)])
 tvalues = np.array([i * dt for i in range(N+2)])
@@ -17,16 +22,8 @@ tvalues = np.array([i * dt for i in range(N+2)])
 h = np.array([[1.] * (M + 2)] * (N+2))
 u = np.array([[0.] * (M + 2)] * (N+2))
 
-h[0,0:M+2] = 1+2/5*np.exp(-5*(xvalues-dx*(M+1)/2)**2)
-
-
-
-
-
-def ddx(y,n, m):
-    return (y[n][m+1] - y[n][m - 1]) / (2*dx)
-    #return (3*y[n][m] - 4*y[n][m-1] + y[n][m-2]) / (2*dx)
-
+#h[0,0:M+2] = 1+2/5*np.exp(-5*(xvalues-dx*(M+1)/2)**2)
+h[0,0:M+2] = 1+1/2*np.sin(xvalues/(2*np.pi))
 
 
 def main():
@@ -45,13 +42,16 @@ def main():
         for i in range(0,2*M,2):
             b[i]    =  2*dx*h[n][i//2+1]
             b[i+1]  =  2*dx*h[n][i//2+1]*u[n][i//2+1]
-        b[0]    += dt*u[n][1]
-        b[1]    += dt*g*h[n][1]
-        b[-2]   += -dt*u[n][M]
-        b[-1]   += -dt*g*h[n][M]
+        b[0]    += dt*u[n][1]*h[n][1]
+        b[1]    += dt*g*h[n][1]*h[n][1]
+        b[-2]   += -dt*u[n][-2]*h[n][M]
+        b[-1]   += -dt*g*h[n][-2]*h[n][M]
+
 
         x = np.linalg.solve(A,b)
         h[n+1][1:M+1] = x[M:2*M]
+        h[n+1][0]     = h[n][1]
+        h[n+1][M+1]   = h[n][M]
         u[n+1][1:M+1] = x[0:M]
 
     fig, ax = plt.subplots()
