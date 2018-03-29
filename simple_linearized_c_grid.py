@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 plt.style.use("ggplot")
 
-N = 301
-M = 43
+N = 300
+M = 50
 h = 1 / M
 T = 1
 k = T / (N - 1)
@@ -12,7 +12,7 @@ p = k / (2 * h)
 g = 9.81
 H = 1
 
-def y1_0(x): return np.ones(len(x)) #np.sin(np.pi * x)
+def y1_0(x): return np.ones(len(x))*np.sin(np.pi * x) #sin to make initial wave
 def y2_0(x): return y1_0(x) * 0.
 def b_0(t): return 1. + 0.01 * np.sin(20 * tvalues)
 def b_1(t): return 1. + 0.01 * np.sin(10 * tvalues)
@@ -20,15 +20,19 @@ def b_1(t): return 1. + 0.01 * np.sin(10 * tvalues)
 xvalues = np.array([ i * h for i in range(M + 1) ])
 tvalues = np.array([ i * k for i in range(N) ])
 
+#making grids
 h_grid = np.array( [ [ 0. ] * (M + 1) ] * N )
 u_grid = np.array( [ [ 0. ] * (M + 1) ] * N )
 
+#setting initial cond.
 h_grid[0,0:(M + 1)] = y1_0(xvalues)
 u_grid[0,0:(M + 1)] = y2_0(xvalues)
 
-h_grid[0:N,0] = b_0(tvalues)
+#to make waves from the side
+#h_grid[0:N,0] = b_0(tvalues)
 #h_grid[0:N,M] = b_1(tvalues)
 
+#??
 u_grid[0:N,0] = 0.
 u_grid[0:N,M] = 0.
 
