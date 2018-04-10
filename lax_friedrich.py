@@ -28,7 +28,7 @@ w[0,-1] = 0.
 def w_next(w,n):
     for m in range(2, 2 * M+2,2):
         w[n + 1, m : m + 2] = np.array( [ 0.5 * (w[n, m - 2] + w[n, m + 2]), 0.5 * (w[n, m - 1] + w[n, m + 3]) ] )\
-                              - r*(f(w,n,m+2)-f(w,n,m-2))
+                              - r * ( f(w, n, m + 2) - f(w, n, m - 2) )
     w[n + 1, 0] = 2 * w[n + 1, 2] - w[n + 1, 4]
     w[n + 1, -2] = 2 * w[n + 1, -4] - w[n + 1, -6]
 
