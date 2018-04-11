@@ -3,11 +3,11 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 plt.style.use("ggplot")
 
-N = 300
-M = 50
-h = 1 / M
-T = 1
-k = T / (N - 1)
+N = 2000
+M = 100
+h = 10 / (M +1)
+T = 10
+k = T / (N + 1)
 p = k / (2 * h)
 g = 9.81
 H = 1
@@ -25,8 +25,11 @@ h_grid = np.array( [ [ 0. ] * (M + 1) ] * N )
 u_grid = np.array( [ [ 0. ] * (M + 1) ] * N )
 
 #setting initial cond.
-h_grid[0,0:(M + 1)] = y1_0(xvalues)
+#h_grid[0,0:(M + 1)] = 1+y1_0(xvalues)
+h_grid[0,0:M+2] = 1+2/5*np.exp(-5*(xvalues-h*(M+1)/2)**2)
+
 u_grid[0,0:(M + 1)] = y2_0(xvalues)
+print (h_grid)
 
 #to make waves from the side
 #h_grid[0:N,0] = b_0(tvalues)
@@ -47,12 +50,12 @@ def main():
 	#method
 	for i in range(nfixed):
 		#can be done in one loop, but it is easier to read if we use two
-		for j in range(1,M):#u
+		for j in range(M):#u
 			du = p * g * (h_grid[i, j+1] - h_grid[i, j-1])
 			u_grid[i + 1,j] = u_grid[i,j] - du
 
 
-		for j in range(1,M):#h
+		for j in range(M):#h
 			dh = p * H * (u_grid[i+1, j+1] - u_grid[i+1, j-1])
 			h_grid[i + 1,j] = h_grid[i,j] - dh
 
